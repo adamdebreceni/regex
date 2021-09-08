@@ -43,7 +43,7 @@ struct CaseAwareEq {
  private:
   CasePolicy policy_;
 };
-using Searcher = boyer_moore_searcher<std::string::const_iterator, CaseAwareHash, CaseAwareEq>;
+using Searcher = boyer_moore_searcher<std::string_view::const_iterator, CaseAwareHash, CaseAwareEq>;
 
 int main() {
   std::regex re("group(.)(?:\\.(.))?.*");
@@ -58,7 +58,7 @@ int main() {
   std::string_view target = "toA";
 
   CasePolicy policy = CasePolicy::IGNORE_CASE;
-  Searcher searcher(target.cbegin(), target.cend(), CaseAwareHash{policy}, CaseAwareHash{policy});
+  Searcher searcher(target.cbegin(), target.cend(), CaseAwareHash{policy}, CaseAwareEq{policy});
 
   for (const auto& segment : segments) {
     std::regex_match(segment, result, re);
