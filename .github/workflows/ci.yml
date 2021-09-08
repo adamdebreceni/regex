@@ -39,5 +39,5 @@ jobs:
           cl.exe /std:c++latest main.cpp
         shell: cmd
       - name: test
-        run: .\main.exe
+        run: dir
         shell: cmd
