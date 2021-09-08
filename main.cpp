@@ -25,12 +25,12 @@ int main() {
 
   std::string_view target = "toA";
 
-  auto searcher = boyer_moore_searcher(target.cbegin(), target.cend());
+  boyer_moore_searcher<std::string_view::const_iterator> searcher(target.cbegin(), target.cend());
 
   for (const auto& segment : segments) {
     std::regex_match(segment, result, re);
 
-    if (std::search(segment.cbegin(), segment.cend(), searcher) != segmend.cend()) {
+    if (std::search(segment.cbegin(), segment.cend(), searcher) != segment.cend()) {
       std::cout << "Routing '" << segment << "' to A" << std::endl;
     } else {
       std::cout << "Routing '" << segment << "' to null" << std::endl;
