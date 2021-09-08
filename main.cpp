@@ -13,8 +13,18 @@ int main() {
       "group1.1:toA(one)", "group1.1:toA(two)", "group1.2:toA(three)", "group2:toA(four)", "group2:toA(five)"
   };
 
+  std::string_view target = "toA";
+
+  auto searcher = std::boyer_moore_searcher(target.cbegin(), target.cend());
+
   for (const auto& segment : segments) {
     std::regex_match(segment, result, re);
+
+    if (std::search(segment.cbegin(), segment.cend(), searcher) != segmend.cend()) {
+      std::cout << "Routing '" << segment << "' to A" << std::endl;
+    } else {
+      std::cout << "Routing '" << segment << "' to null" << std::endl;
+    }
 
     bool first = true;
     std::string group;
