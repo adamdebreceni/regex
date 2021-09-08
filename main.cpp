@@ -74,11 +74,13 @@ int main() {
       std::cout << "Routing '" << segment << "' to null" << std::endl;
     }
 
+    std::string_view comma = ", ";
+
     auto to_string = [] (const auto& submatch) -> std::string {return submatch;};
     std::string group = ranges::views::tail(result)  // only join the capture groups
        | ranges::views::transform(to_string)
        | ranges::views::cache1
-       | ranges::views::join(std::string(", "))
+       | ranges::views::join(comma)
        | ranges::to<std::string>();
 
     std::cout << "str = '" << segment << "'  group = '" << group << "'" << std::endl;
