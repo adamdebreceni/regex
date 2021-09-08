@@ -26,6 +26,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
       - name: list
         run: |
+          C:
           cd C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise
           dir
         shell: cmd
