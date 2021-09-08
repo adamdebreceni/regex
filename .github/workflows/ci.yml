@@ -31,14 +31,7 @@ jobs:
           dir
         shell: cmd
       - name: build
-        run: |
-          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
-          PATH %PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64
-          PATH %PATH%;C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64
-          PATH %PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\Roslyn
-          dir
-          cl.exe /std:c++latest main.cpp
-          dir
+        run: "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat" && dir && cl.exe /std:c++latest main.cpp && dir
         shell: cmd
       - name: test
         run: dir
