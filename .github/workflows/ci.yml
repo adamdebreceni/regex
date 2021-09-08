@@ -43,5 +43,9 @@ jobs:
           dir
         shell: cmd
       - name: test
-        run: build/RelWithDebInfo/main.exe
+        run: |
+          cd build
+          dir
+          cd RelWithDebInfo
+          dir
         shell: cmd
