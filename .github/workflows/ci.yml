@@ -48,4 +48,5 @@ jobs:
           dir
           cd RelWithDebInfo
           dir
+          main.exe
         shell: cmd
