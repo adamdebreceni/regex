@@ -1,0 +1,35 @@
+name: "MiNiFi-CPP CI"
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  macos_xcode_12_0:
+    name: "macos-xcode12.0"
+    runs-on: macos-10.15
+    timeout-minutes: 90
+    steps:
+      - id: checkout
+        uses: actions/checkout@v2
+      - id: setup_env
+        name: setup enviroment
+        run: sudo xcode-select -switch /Applications/Xcode_12.app
+      - name: build
+        run: g++ -std=c++17 main.cpp
+      - name: test
+        run: ./a.out
+  windows_VS2019:
+    name: "windows-vs2019"
+    runs-on: windows-2019
+    timeout-minutes: 180
+    steps:
+      - id: checkout
+        uses: actions/checkout@v2
+      - name: Setup PATH
+        uses: microsoft/setup-msbuild@v1.0.2
+      - name: build
+        run: |
+          PATH %PATH%;C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64
+          PATH %PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\Roslyn
+          cl.exe /std:c++latest main.cpp
+        shell: cmd
+      - name: test
+        run: main.exe
+        shell: cmd
