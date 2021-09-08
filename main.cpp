@@ -57,7 +57,7 @@ int main() {
 
   std::string_view target = "toA";
 
-  CasePolicy policy = CasePolicy::IGNORE_CASE;
+  CasePolicy policy = CasePolicy::CASE_SENSITIVE;
   Searcher searcher(target.cbegin(), target.cend(), CaseAwareHash{policy}, CaseAwareEq{policy});
 
   for (const auto& segment : segments) {
