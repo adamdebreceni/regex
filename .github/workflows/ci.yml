@@ -38,5 +38,5 @@ jobs:
           dir
         shell: cmd
       - name: test
-        run: dir
+        run: main.exe
         shell: cmd
