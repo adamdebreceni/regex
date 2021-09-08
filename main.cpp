@@ -5,13 +5,45 @@
 
 #ifdef __APPLE__
 #include <experimental/functional>
-template<typename It>
-using boyer_moore_searcher = std::experimental::boyer_moore_searcher<It>;
+template<typename It, typename Hash, typename Eq>
+using boyer_moore_searcher = std::experimental::boyer_moore_searcher<It, Hash, Eq>;
 #else
 #include <functional>
-template<typename It>
-using boyer_moore_searcher = std::boyer_moore_searcher<It>;
+template<typename It, typename Hash, typename Eq>
+using boyer_moore_searcher = std::boyer_moore_searcher<It, Hash, Eq>;
 #endif
+
+enum class CasePolicy {
+  CASE_SENSITIVE,
+  IGNORE_CASE
+};
+
+struct CaseAwareHash {
+  explicit CaseAwareHash(CasePolicy policy): policy_(policy) {}
+  size_t operator()(char ch) const {
+    if (policy_ == CasePolicy::CASE_SENSITIVE) {
+      return static_cast<size_t>(ch);
+    }
+    return std::hash<int>{}(std::tolower(static_cast<unsigned char>(ch)));
+  }
+
+ private:
+  CasePolicy policy_;
+};
+
+struct CaseAwareEq {
+  explicit CaseAwareEq(CasePolicy policy): policy_(policy) {}
+  bool operator()(char a, char b) const {
+    if (policy_ == CasePolicy::CASE_SENSITIVE) {
+      return a == b;
+    }
+    return std::tolower(static_cast<unsigned char>(a)) == std::tolower(static_cast<unsigned char>(b));
+  }
+
+ private:
+  CasePolicy policy_;
+};
+using Searcher = boyer_moore_searcher<std::string::const_iterator, CaseAwareHash, CaseAwareEq>;
 
 int main() {
   std::regex re("group(.)(?:\\.(.))?.*");
@@ -25,7 +57,8 @@ int main() {
 
   std::string_view target = "toA";
 
-  boyer_moore_searcher<std::string_view::const_iterator> searcher(target.cbegin(), target.cend());
+  CasePolicy policy = CasePolicy::IGNORE_CASE;
+  Searcher searcher(target.cbegin(), target.cend(), CaseAwareHash{policy}, CaseAwareHash{policy});
 
   for (const auto& segment : segments) {
     std::regex_match(segment, result, re);
