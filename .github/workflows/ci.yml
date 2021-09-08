@@ -24,7 +24,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup PATH
         uses: microsoft/setup-msbuild@v1.0.2
-        shell: cmd
       - name: build
         run: |
           PATH %PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64
