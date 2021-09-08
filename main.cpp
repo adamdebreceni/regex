@@ -3,6 +3,16 @@
 #include <iostream>
 #include <vector>
 
+#ifdef __APPLE__
+#include <experimental/functional>
+template<typename It>
+using boyer_moore_searcher = std::experimental::boyer_moore_searcher<It>;
+#else
+#include <functional>
+template<typename It>
+using boyer_moore_searcher = std::boyer_moore_searcher<It>;
+#endif
+
 int main() {
   std::regex re("group(.)(?:\\.(.))?.*");
   std::smatch result;
@@ -15,7 +25,7 @@ int main() {
 
   std::string_view target = "toA";
 
-  auto searcher = std::boyer_moore_searcher(target.cbegin(), target.cend());
+  auto searcher = boyer_moore_searcher(target.cbegin(), target.cend());
 
   for (const auto& segment : segments) {
     std::regex_match(segment, result, re);
