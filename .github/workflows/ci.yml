@@ -27,7 +27,7 @@ jobs:
       - name: list
         run: |
           C:
-          cd C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC
+          cd C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools
           dir
         shell: cmd
       - name: build
