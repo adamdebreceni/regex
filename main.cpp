@@ -2,6 +2,11 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <range/v3/view/tail.hpp>
+#include <range/v3/view/cache1.hpp>
+#include <range/v3/view/join.hpp>
+#include <range/v3/core.hpp>
+#include <range/v3/view/transform.hpp>
 
 #ifdef __APPLE__
 #include <experimental/functional>
@@ -69,13 +74,12 @@ int main() {
       std::cout << "Routing '" << segment << "' to null" << std::endl;
     }
 
-    bool first = true;
-    std::string group;
-    for (int i = 1; i < result.size(); ++i) {
-      if (!first) group += ", ";
-      first = false;
-      group += result[i];
-    }
+    auto to_string = [] (const auto& submatch) -> std::string {return submatch;};
+    std::string group = ranges::views::tail(result)  // only join the capture groups
+       | ranges::views::transform(to_string)
+       | ranges::views::cache1
+       | ranges::views::join(std::string(", "))
+       | ranges::to<std::string>();
 
     std::cout << "str = '" << segment << "'  group = '" << group << "'" << std::endl;
   }
